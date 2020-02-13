@@ -9,9 +9,9 @@ POST http://localhost:3001/api/blogs
 content-type: application/json
 
 {
-    "title": "Test posting from VS REST Client",
-    "author": "Tester",
-    "url": "test/vs-code.com",
-    "likes": 0
+  "title": "Test posting from VS REST Client",
+  "author": "Tester",
+  "url": "test/vs-code.com",
+  "likes": 0
 }
 
