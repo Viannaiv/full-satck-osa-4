@@ -27,3 +27,27 @@ content-type: application/json
   "url": "test/vs-code.com"
 }
 
+
+### Create a note without title
+
+POST http://localhost:3001/api/blogs
+content-type: application/json
+
+{
+  "author": "Tester",
+  "url": "test/vs-code.com",
+  "likes": 2
+}
+
+
+### Create a note without url
+
+POST http://localhost:3001/api/blogs
+content-type: application/json
+
+{ 
+  "title": "Test posting from VS REST Client",
+  "author": "Tester",
+  "likes": 2
+}
+

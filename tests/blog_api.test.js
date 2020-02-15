@@ -68,6 +68,32 @@ describe('Tests for POST /api/blogs :', () => {
 
     expect(res.body.likes).toBe(0)
   })
+
+  test('if new blog does not contain a title, status code 400 is returned', async () => {
+    const newBlog = {
+      author: 'M',
+      url: 'http://www.interestingblogs.com/notitle',
+      likes: 0
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
+
+  test('if new blog does not contain a url, status code 400 is returned', async () => {
+    const newBlog = {
+      title: 'A new blog without url',
+      author: 'A',
+      likes: 0
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
 })
 
 afterAll(() => {
