@@ -32,7 +32,7 @@ describe('Tests for GET /api/blogs :', () => {
 })
 
 describe('Tests for POST /api/blogs :', () => {
-  test('A new blog is added correctly', async () => {
+  test('a new blog is added correctly', async () => {
     const newBlog = {
       title: 'Interesting blog',
       author: 'M. Find',
@@ -52,6 +52,21 @@ describe('Tests for POST /api/blogs :', () => {
     const returned_id = res.body.id
     newBlog.id = returned_id
     expect(blogs).toContainEqual(newBlog)
+  })
+
+  test('the likes of a new blog are set to 0 if no other value is defined', async () => {
+    const newBlog = {
+      title: 'A new blog without likes',
+      author: 'N. Find',
+      url: 'http://www.interestingblogs.com/nolikes'
+    }
+
+    const res = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+
+    expect(res.body.likes).toBe(0)
   })
 })
 
