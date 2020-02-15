@@ -96,7 +96,7 @@ describe('Tests for POST /api/blogs :', () => {
   })
 })
 
-describe('Tests for DELETE /api/blogs/:id', () => {
+describe('Tests for DELETE /api/blogs/:id :', () => {
   test('deletion succeeds with status code 204 if the id is valid', async () => {
     const blogsAtBeginning = await helper.blogsInDb()
     const deletableBlog = blogsAtBeginning[0]
@@ -109,6 +109,28 @@ describe('Tests for DELETE /api/blogs/:id', () => {
     expect(blogsAtEnd.length).toBe(blogsAtBeginning.length - 1)
 
     expect(blogsAtEnd).not.toContainEqual(deletableBlog)
+  })
+})
+
+describe('Tests for PUT /api/blogs/:id :', () => {
+  test('updating a blog succeeds and updates the blog with correct content', async () => {
+    const blogsAtBeginning = await helper.blogsInDb()
+    const blogToUpdate = blogsAtBeginning[0]
+    const updatedBlog = {
+      ...blogToUpdate,
+      likes: 9
+    }
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedBlog)
+      .expect(200)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd.length).toBe(blogsAtBeginning.length)
+
+    expect(blogsAtEnd).not.toContainEqual(blogToUpdate)
+    expect(blogsAtEnd).toContainEqual(updatedBlog)
   })
 })
 
