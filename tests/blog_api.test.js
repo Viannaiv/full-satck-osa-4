@@ -10,7 +10,7 @@ beforeEach(async () => {
   await Blog.insertMany(helper.initialBlogs)
 })
 
-describe('Tests for GET /api/blogs:', () => {
+describe('Tests for GET /api/blogs :', () => {
   test('blogs are returned as json', async () => {
     await api
       .get('/api/blogs')
@@ -28,6 +28,30 @@ describe('Tests for GET /api/blogs:', () => {
     const blogs = res.body
     expect(blogs[0].id).toBeDefined()
     expect(blogs[0]._id).not.toBeDefined()
+  })
+})
+
+describe('Tests for POST /api/blogs :', () => {
+  test('A new blog is added correctly', async () => {
+    const newBlog = {
+      title: 'Interesting blog',
+      author: 'M. Find',
+      url: 'http://www.interestingblogs.com/find',
+      likes: 10
+    }
+
+    const res = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const blogs =  await helper.blogsInDb()
+    expect(blogs.length).toBe(helper.initialBlogs.length + 1)
+
+    const returned_id = res.body.id
+    newBlog.id = returned_id
+    expect(blogs).toContainEqual(newBlog)
   })
 })
 
