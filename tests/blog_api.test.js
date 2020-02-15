@@ -10,16 +10,25 @@ beforeEach(async () => {
   await Blog.insertMany(helper.initialBlogs)
 })
 
-test('blogs are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
-})
+describe('Tests for GET /api/blogs:', () => {
+  test('blogs are returned as json', async () => {
+    await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+  })
 
-test('all saved blogs are returned', async () => {
-  const res = await api.get('/api/blogs')
-  expect(res.body.length).toBe(helper.initialBlogs.length)
+  test('all saved blogs are returned', async () => {
+    const res = await api.get('/api/blogs')
+    expect(res.body.length).toBe(helper.initialBlogs.length)
+  })
+
+  test('the identification field of a returned blog is named id not _id', async () => {
+    const res = await api.get('/api/blogs')
+    const blogs = res.body
+    expect(blogs[0].id).toBeDefined()
+    expect(blogs[0]._id).not.toBeDefined()
+  })
 })
 
 afterAll(() => {
